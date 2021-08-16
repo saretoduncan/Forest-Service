@@ -46,6 +46,15 @@ class AnimalsTest {
         assertEquals(Animals.getAll().get(1),otherAnimal);
     }
     @Test
+    public void Animals_instantiateFindById_true(){
+        testAnimal.save();
+        Animals otherAnimal= new Animals("lion");
+        otherAnimal.save();
+        assertEquals(Animals.findById(testAnimal.getId()),testAnimal);
+        assertEquals(Animals.findById(otherAnimal.getId()),otherAnimal);
+
+    }
+    @Test
     public void Animals_instantiateWithDelete_true(){
         testAnimal.save();
         testAnimal.delete(testAnimal.getId());

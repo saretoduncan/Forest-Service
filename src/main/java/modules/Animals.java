@@ -57,6 +57,13 @@ public class Animals implements DatabaseManagement {
            }
 
        }
+    public static Animals findById(int id){
+        try(Connection connection= DB.sql2o.open()){
+            String sql= "SELECT * FROM animals WHERE id= :id";
+            return connection.createQuery(sql).addParameter("id", id)
+                    .executeAndFetchFirst(Animals.class);
+        }
+    }
        public static void clearAll(){
        try(Connection connection=DB.sql2o.open()){
            String sql = "DELETE FROM  animals * ";
