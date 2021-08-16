@@ -57,6 +57,12 @@ public class Animals implements DatabaseManagement {
            }
 
        }
+       public static void clearAll(){
+       try(Connection connection=DB.sql2o.open()){
+           String sql = "DELETE FROM  animals * ";
+            connection.createQuery(sql).executeUpdate();
+       }
+       }
 
 
     public static List<Animals> getAll(){

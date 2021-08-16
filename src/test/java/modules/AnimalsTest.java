@@ -51,4 +51,12 @@ class AnimalsTest {
         testAnimal.delete(testAnimal.getId());
         assertEquals(0,Animals.getAll().size());
     }
+    @Test
+    public void Animals_instateWithDbClearALl(){
+        testAnimal.save();
+        Animals otherAnimal= new Animals("elephant");
+        otherAnimal.save();
+        Animals.clearAll();
+        assertEquals(0,Animals.getAll().size());
+    }
 }
