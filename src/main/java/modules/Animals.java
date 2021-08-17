@@ -72,6 +72,7 @@ public class Animals implements DatabaseManagement {
        }
 
 
+
     public static List<Animals> getAll(){
        try(Connection connection= DB.sql2o.open()) {
            String sql = "SELECT * FROM animals;";
