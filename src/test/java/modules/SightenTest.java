@@ -8,14 +8,15 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 import java.security.Timestamp;
+import java.text.DateFormat;
 import java.util.Date;
 
 import static java.time.LocalTime.now;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SightenTest {
-    Animals testAnimal;
-    EndagereredSpecies testEndangered;
+    EndagereredSpecies testAnimal;
+    Sighten testSighting;
 
     @BeforeAll
     public static void before(){
@@ -24,17 +25,19 @@ class SightenTest {
     }
     @BeforeEach
     public void setUp(){
-        testAnimal= new Animals("antelope");
+        testAnimal = new EndagereredSpecies("antelope", "healthy", "young");
+        testAnimal.save();
+        testSighting= new Sighten("duncan","zone A", testAnimal.getId());
 
     }
     @AfterEach
     public void after(){
         try(Connection connection= DB.sql2o.open()){
             String deleteAnimals= "DELETE FROM animals *;";
-            String deleteSpecies= "DELETE FROM endegered *";
-            String deleteSighten= "DELETE FROM sighten *";
+
+            String deleteSighten= "DELETE FROM sighting *";
             connection.createQuery(deleteAnimals).executeUpdate();
-            connection.createQuery(deleteSpecies).executeUpdate();
+
             connection.createQuery(deleteSighten).executeUpdate();
 
         }
@@ -42,45 +45,50 @@ class SightenTest {
     }
     @Test
     void endangeredSpecies_instantiateCorrectly_true(){
-        testAnimal.save();
-        Sighten testSighten= new Sighten( "zone A", testAnimal.getId());
-        assertTrue(testSighten instanceof Sighten);
+
+
+        assertTrue(testSighting instanceof Sighten);
 
 
 
     }
     @Test
     void sighten_instantiate_getters(){
-        testAnimal.save();
-        Sighten testSighten= new Sighten( "zone A", testAnimal.getId());
-        assertEquals( testAnimal.getId(),testSighten.getANIMALID());
-        assertEquals("zone A",testSighten.getLOCATION());
+
+        assertEquals( testAnimal.getId(),testSighting.getANIMALID());
+        assertEquals("zone A",testSighting.getLOCATION());
 
 
 
     }
     @Test
     void sighted_instantiateSave_true(){
-        testAnimal.save();
-        Sighten testSighten= new Sighten( "zone A", testAnimal.getId());
-        testSighten.save();
 
-        assertEquals(Sighten.getAll().get(0).getId(),testSighten.getId());
+        testSighting.save();
+
+        assertEquals(Sighten.getAll().get(0).getId(),testSighting.getId());
     }
     @Test
     void sighted_instantiateClearAll_true(){
-        testAnimal.save();
-        Sighten testSighten= new Sighten( "zone A", testAnimal.getId());
-        testSighten.save();
+
+        testSighting.save();
         Sighten.clearAll();
         assertEquals(0,Sighten.getAll().size());
-    }  @Test
+    }
+    @Test
     void sighted_instantiateDelete_true(){
-        testAnimal.save();
-        Sighten testSighten= new Sighten( "zone A", testAnimal.getId());
-        testSighten.save();
-        Sighten.delete(testSighten.getId());
+
+
+        testSighting.save();
+        Sighten.delete(testSighting.getId());
         assertEquals(0,Sighten.getAll().size());
+    }
+    @Test
+    void save_instanceOfLastSeen_true(){
+        testSighting.save();
+        Timestamp timeSighting = Sighten.findById(testSighting.getId()).getLastSeen();
+        long rightNow = new Date().getTime();
+        assertEquals(DateFormat.getDateInstance().format(rightNow), DateFormat.getDateInstance().format(timeSighting));
     }
 
 

@@ -1,0 +1,62 @@
+{{#partial "content"}}
+<div class="container">
+
+    <h3 class="text-center">All Sightings</h3>
+    {{#if all}}
+    <div class="d-flex justify-content-around border border-2">
+    <div>
+    <h5 class="text-success text-center">Animal Name</h5>
+    {{#each name as |name|}}
+    <p>{{name}}</p>
+ <hr>
+    {{/each}}
+    </div>
+     <div>
+      <h5 class="text-success text-center">Animal Age</h5>
+    {{#each age as |age|}}
+    <p>{{age}}</p>
+ <hr>
+    {{/each}}
+    </div>
+    <div>
+     <h5 class="text-success text-center">Animal health</h5>
+    {{#each health as |health|}}
+    <p>{{health}}</p>
+ <hr>
+    {{/each}}
+    </div>
+    <div>
+     <h5 class="text-success text-center">Animal Location</h5>
+    {{#each location as |location|}}
+    <p>{{location}}</p>
+ <hr>
+    {{/each}}
+    </div>
+      <div>
+       <h5 class="text-success text-center">Rangers Name</h5>
+    {{#each ranger as |ranger|}}
+    <p>{{ranger}}</p>
+ <hr>
+    {{/each}}
+    </div>
+     <div>
+      <h5 class="text-success text-center">Lastseen</h5>
+    {{#each time as |time|}}
+    <p>{{time}}</p>
+ <hr>
+    {{/each}}
+
+    </div>
+
+
+
+
+    </div>
+{{else}}
+<p class="text-center">YOU DONT HAVE ANY SIGHTINGS AT THE MOMENT <br>
+CLICK <a href="/sighting">HERE</a> TO RECORD NEW SIGHTINGS</p>
+{{/if}}
+
+</div>
+{{/partial}}
+{{>layout.hbs}}

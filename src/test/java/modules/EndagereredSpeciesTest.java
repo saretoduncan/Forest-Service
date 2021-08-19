@@ -10,86 +10,76 @@ import org.sql2o.Sql2o;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EndagereredSpeciesTest {
-    Animals testAnimal;
-    EndagereredSpecies testEndangered;
+    EndagereredSpecies testAnimal;
+
 
     @BeforeAll
-    public static void before(){
+    public static void before() {
         DB.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/wildlife_tracker_test", "softwaredev", "k1pk0sg31");
 
     }
+
     @BeforeEach
-    public void setUp(){
-        testAnimal= new Animals("antelope");
+    public void setUp() {
+        testAnimal = new EndagereredSpecies("antelope", "healthy", "young");
 
     }
+
     @AfterEach
-    public void after(){
-        try(Connection connection= DB.sql2o.open()){
-            String deleteAnimals= "DELETE FROM animals *;";
-            String deleteSpecies= "DELETE FROM endegered *";
+    public void after() {
+        try (Connection connection = DB.sql2o.open()) {
+            String deleteAnimals = "DELETE FROM animals *;";
+            String deleteSighten= "DELETE FROM sighting *";
             connection.createQuery(deleteAnimals)
                     .executeUpdate();
-            connection.createQuery(deleteSpecies).executeUpdate();
+            connection.createQuery(deleteSighten).executeUpdate();
+
 
         }
 
     }
+
     @Test
     void endangeredSpecies_instantiateCorrectly() {
-        testAnimal.save();
-        testEndangered = new EndagereredSpecies("healthy","young", testAnimal.getId());
-      assertTrue(testEndangered instanceof EndagereredSpecies);
+
+        assertTrue(testAnimal instanceof EndagereredSpecies);
     }
     @Test
     void endangeredSpecies_instantiate_getters(){
-        testAnimal.save();
-        testEndangered = new EndagereredSpecies("healthy","young", testAnimal.getId());
-        assertEquals(testAnimal.getId(),testEndangered.getANIMAL_ID());
-        assertEquals("healthy",testEndangered.getHEALTH());
-        assertEquals("young",testEndangered.getAGE());
+
+
+        assertEquals("antelope", testAnimal.getName());
+        assertEquals("healthy",testAnimal.getHEALTH());
+        assertEquals("young",testAnimal.getAGE());
 
     }
     @Test
     public void endangered_instantiateWithDelete_true(){
         testAnimal.save();
-        testEndangered = new EndagereredSpecies("healthy","young", testAnimal.getId());
-        testEndangered.save();
-        EndagereredSpecies.delete(testEndangered.getId());
-        assertEquals(0,EndagereredSpecies.getAll().size());
+
+
+        testAnimal.delete(testAnimal.getId());
+        assertEquals(0, EndagereredSpecies.getAll().size());
     }
+//
     @Test
     public void endangered_instantiateFindById_true(){
         testAnimal.save();
-        testEndangered = new EndagereredSpecies("healthy","young", testAnimal.getId());
+        EndagereredSpecies testEndangered = new EndagereredSpecies("Elephant","weak", "old");
         testEndangered.save();
         System.out.println(testEndangered.getId());
-        System.out.println(EndagereredSpecies.findById(testEndangered.getId()));
+        System.out.println(EndagereredSpecies.findById(testEndangered.getId()).getName());
         assertEquals( EndagereredSpecies.findById(testEndangered.getId()),testEndangered);
     }
-    @Test
-    public void Endangered_instantiatesWithSave_true() {
-        testAnimal.save();
-        Animals otherAnimal= new Animals("lion");
-        otherAnimal.save();
-        testEndangered = new EndagereredSpecies("healthy","young", testAnimal.getId());
-        testEndangered.save();
-        EndagereredSpecies testEndangered2 = new EndagereredSpecies("healthy", "old", otherAnimal.getId());
-        testEndangered2.save();
-        assertEquals(EndagereredSpecies.getAll().get(0),testEndangered);
-        assertEquals(EndagereredSpecies.getAll().get(1),testEndangered2);
-    }
+
     @Test
     public void Endegered_InstantiatesWithClearAll_true(){
         testAnimal.save();
-        Animals otherAnimal= new Animals("lion");
-        otherAnimal.save();
-        testEndangered = new EndagereredSpecies("healthy","young", testAnimal.getId());
+
+        EndagereredSpecies testEndangered = new EndagereredSpecies("Elephant","weak", "old");
         testEndangered.save();
         EndagereredSpecies.clearAll();
-        assertEquals(0,EndagereredSpecies.getAll().size());
+        assertEquals(0, EndagereredSpecies.getAll().size());
     }
-
-
 
 }
