@@ -1,0 +1,11 @@
+*{
+    margin:0;
+    padding: 0;
+}
+body{
+  font-family: 'Fira Sans Extra Condensed', sans-serif;
+  background-color: rgb(248,249,200)
+}
+.navbar-brand img{
+      width: 100px;
+}
