@@ -68,7 +68,7 @@ public class Sighten {
     }
     public static void delete(int id){
         try(Connection connection= DB.sql2o.open()){
-            String sql = "DELETE FROM sighting  WHERE id = :id";
+            String sql = "DELETE FROM sighting  WHERE id = :id;";
             connection.createQuery(sql).addParameter("id",id).executeUpdate();
         } catch(Sql2oException err){
             System.out.println("error::: "+ err);
@@ -85,7 +85,7 @@ public class Sighten {
     }
     public static List<Sighten> getAll(){
         try(Connection connection = DB.sql2o.open()){
-            String sql = "SELECT * FROM Sighting";
+            String sql = "SELECT * FROM Sighting;";
            return connection.createQuery(sql).executeAndFetch(Sighten.class);
         }
     }

@@ -28,7 +28,22 @@ public class App {
             Map<String, Object > model = new HashMap<String, Object>();
             return new ModelAndView(model, "preSighting.html");
         }, new HandlebarsTemplateEngine());
-
+        post("/sighten/frm",(request, response) -> {
+            Map<String, Object> model = new HashMap<String, Object>();
+            String name = request.queryParams("name");
+            String health = request.queryParams("health");
+            System.out.println(health);
+            String location = request.queryParams("locationEndager");
+            String ranger = request.queryParams("ranger");
+            String age = request.queryParams("age");
+            EndagereredSpecies newAnimal = new EndagereredSpecies(name, health, age);
+            newAnimal.save();
+            Sighten sighten= new Sighten(ranger,location,newAnimal.getId());
+            sighten.save();
+            model.put("newAnimal", newAnimal);
+            return new ModelAndView(model,"success.hbs");
+//
+        },new HandlebarsTemplateEngine());
       get("/sighten/main",(request, response) -> {
         Map<String, Object> model = new HashMap<String, Object>();
         List<EndagereredSpecies>all= EndagereredSpecies.getAll();
@@ -63,21 +78,6 @@ public class App {
 //
         return (new ModelAndView(model,"sighting.hbs"));
       }, new HandlebarsTemplateEngine());
- post("/sighten/main",(request, response) -> {
-                    Map<String, Object> model = new HashMap<String, Object>();
-                    String name = request.queryParams("name");
-                    String health = request.queryParams("health");
-                    System.out.println(health);
-                    String location = request.queryParams("locationEndager");
-                    String ranger = request.queryParams("ranger");
-                    String age = request.queryParams("age");
-                    EndagereredSpecies newAnimal = new EndagereredSpecies(name, health, age);
-                    newAnimal.save();
-                    Sighten sighten= new Sighten(ranger,location,newAnimal.getId());
-                    sighten.save();
-                    model.put("newAnimal", newAnimal);
-            return new ModelAndView(model,"success.hbs");
-//
-        },new HandlebarsTemplateEngine());
+
     }
 }

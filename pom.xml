@@ -10,6 +10,13 @@
 
     <dependencies>
         <!-- We need to list out ALL dependencies our project needs. If you have dependencies not listed here, but sure to add them -->
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.23.jre7</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.sql2o.extensions/sql2o-postgres -->
         <dependency>
             <groupId>org.sql2o.extensions</groupId>
